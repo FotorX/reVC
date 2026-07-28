@@ -13,7 +13,7 @@ jobs:
           submodules: recursive
 
       - name: Install dependencies
-        run: brew install cmake glfw openal-soft mpg123
+        run: brew install cmake glfw openal-soft mpg123 pkg-config
 
       - name: Configure CMake
         run: |
@@ -24,8 +24,8 @@ jobs:
             -D RE3_AUDIO=OPENAL \
             -D RE3_VENOM=ON \
             -D OPENAL_INCLUDE_DIR=/opt/homebrew/opt/openal-soft/include \
-            -D OPENAL_LIBRARY=/opt/homebrew/opt/openal-soft/lib/libopenal.dylib \
-            -D CMAKE_CXX_FLAGS="-I/opt/homebrew/opt/openal-soft/include -std=c++11 -Wno-error" \
+            -D CMAKE_C_FLAGS="-I/opt/homebrew/opt/openal-soft/include -I/opt/homebrew/include" \
+            -D CMAKE_CXX_FLAGS="-I/opt/homebrew/opt/openal-soft/include -I/opt/homebrew/include -std=c++11 -Wno-error" \
             ..
 
       - name: Build reVC
