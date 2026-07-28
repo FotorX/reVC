@@ -1,0 +1,33 @@
+name: Build reVC macOS Native
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: brew install cmake glfw openal-soft mpg123
+
+      - name: Configure CMake
+        run: |
+          mkdir build
+          cd build
+          cmake -D LIBRW_PLATFORM=GL3 -D RE3_AUDIO=OPENAL -D RE3_VENOM=ON ..
+
+      - name: Build reVC
+        run: |
+          cd build
+          make -j$(sysctl -n hw.ncpu)
+
+      - name: Upload Executable Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: reVC-macOS-executable
+          path: build/bin/reVC
