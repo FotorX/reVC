@@ -19,7 +19,14 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -D LIBRW_PLATFORM=GL3 -D RE3_AUDIO=OPENAL -D RE3_VENOM=ON -DCMAKE_CXX_FLAGS="-std=c++11 -Wno-error" ..
+          cmake \
+            -D LIBRW_PLATFORM=GL3 \
+            -D RE3_AUDIO=OPENAL \
+            -D RE3_VENOM=ON \
+            -D OPENAL_INCLUDE_DIR=/opt/homebrew/opt/openal-soft/include \
+            -D OPENAL_LIBRARY=/opt/homebrew/opt/openal-soft/lib/libopenal.dylib \
+            -D CMAKE_CXX_FLAGS="-I/opt/homebrew/opt/openal-soft/include -std=c++11 -Wno-error" \
+            ..
 
       - name: Build reVC
         run: |
