@@ -39,4 +39,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: reVC-macOS-executable
-          path: build/bin/reVC
+          path: |
+            build/reVC
+            build/bin/reVC
+            build/**/reVC
