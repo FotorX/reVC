@@ -13,24 +13,19 @@ jobs:
           submodules: recursive
 
       - name: Install dependencies
-        run: brew install cmake glfw openal-soft mpg123 pkg-config
+        run: brew install cmake glfw mpg123 pkg-config
 
       - name: Configure CMake
         run: |
           mkdir build
           cd build
-          
-          # Ask pkg-config where openal-soft includes and libs actually live
-          OPENAL_CFLAGS=$(pkg-config --cflags openal)
-          OPENAL_LIBS=$(pkg-config --libs openal)
-          
           cmake \
             -D LIBRW_PLATFORM=GL3 \
             -D RE3_AUDIO=OPENAL \
             -D RE3_VENOM=ON \
-            -D CMAKE_C_FLAGS="${OPENAL_CFLAGS} -I/opt/homebrew/include -I/usr/local/include" \
-            -D CMAKE_CXX_FLAGS="${OPENAL_CFLAGS} -I/opt/homebrew/include -I/usr/local/include -std=c++11 -Wno-error" \
-            -D CMAKE_EXE_LINKER_FLAGS="${OPENAL_LIBS}" \
+            -D OPENAL_INCLUDE_DIR=/System/Library/Frameworks/OpenAL.framework/Headers \
+            -D OPENAL_LIBRARY=/System/Library/Frameworks/OpenAL.framework \
+            -D CMAKE_CXX_FLAGS="-I/System/Library/Frameworks/OpenAL.framework/Headers -std=c++11 -Wno-error" \
             ..
 
       - name: Build reVC
